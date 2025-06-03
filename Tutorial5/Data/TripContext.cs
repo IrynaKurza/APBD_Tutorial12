@@ -5,9 +5,11 @@ namespace Tutorial5.Data;
 
 public class TripContext : DbContext
 {
-    public DbSet<Book> Books { get; set; }
-    public DbSet<Author> Authors { get; set; }
-    public DbSet<BookAuthor> BookAuthors { get; set; }
+    public DbSet<Client> Clients { get; set; }
+    public DbSet<Trip> Trips { get; set; }
+    public DbSet<Country> Countries { get; set; }
+    public DbSet<ClientTrip> ClientTrips { get; set; }
+    public DbSet<CountryTrip> CountryTrips { get; set; }
     
     protected TripContext()
     {
@@ -19,31 +21,66 @@ public class TripContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Author>(a =>
+        modelBuilder.Entity<Client>(c =>
         {
-            a.ToTable("Author");
-            
-            a.HasKey(e => e.AuthorId);
-            a.Property(e => e.FirstName).HasMaxLength(100);
-            a.Property(e => e.LastName).HasMaxLength(200);
+            c.ToTable("Client");
+            c.HasKey(e => e.IdClient);
+            c.Property(e => e.FirstName).HasMaxLength(120);
+            c.Property(e => e.LastName).HasMaxLength(120);
+            c.Property(e => e.Email).HasMaxLength(120);
+            c.Property(e => e.Telephone).HasMaxLength(120);
+            c.Property(e => e.Pesel).HasMaxLength(120);
         });
 
-        modelBuilder.Entity<Author>().HasData(new List<Author>()
+        modelBuilder.Entity<Trip>(t =>
         {
-            new Author() { AuthorId = 1, FirstName = "Jane", LastName = "Doe"},
-            new Author() { AuthorId = 2, FirstName = "John", LastName = "Doe"},
+            t.ToTable("Trip");
+            t.HasKey(e => e.IdTrip);
+            t.Property(e => e.Name).HasMaxLength(120);
+            t.Property(e => e.Description).HasMaxLength(220);
         });
-        
-        modelBuilder.Entity<Book>().HasData(new List<Book>()
+
+        modelBuilder.Entity<Country>(c =>
         {
-            new Book() { BookId = 1, Name = "Book 1", Price = 10.2 },
-            new Book() { BookId = 2, Name = "Book 2", Price = 123.2 },
+            c.ToTable("Country");
+            c.HasKey(e => e.IdCountry);
+            c.Property(e => e.Name).HasMaxLength(120);
         });
-        
-        modelBuilder.Entity<BookAuthor>().HasData(new List<BookAuthor>()
+
+        modelBuilder.Entity<ClientTrip>(ct =>
         {
-            new BookAuthor() { AuthorId = 1, BookId = 1, Notes = "n1" },
-            new BookAuthor() { AuthorId = 2, BookId = 1, Notes = "n2" },
+            ct.ToTable("Client_Trip");
+            ct.HasKey(e => new { e.IdClient, e.IdTrip });
+            
+            ct.HasOne(d => d.Client)
+                .WithMany(p => p.ClientTrips)
+                .HasForeignKey(d => d.IdClient)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Table_5_Client");
+
+            ct.HasOne(d => d.Trip)
+                .WithMany(p => p.ClientTrips)
+                .HasForeignKey(d => d.IdTrip)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Table_5_Trip");
+        });
+
+        modelBuilder.Entity<CountryTrip>(ct =>
+        {
+            ct.ToTable("Country_Trip");
+            ct.HasKey(e => new { e.IdCountry, e.IdTrip });
+            
+            ct.HasOne(d => d.Country)
+                .WithMany(p => p.CountryTrips)
+                .HasForeignKey(d => d.IdCountry)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Country_Trip_Country");
+
+            ct.HasOne(d => d.Trip)
+                .WithMany(p => p.CountryTrips)
+                .HasForeignKey(d => d.IdTrip)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Country_Trip_Trip");
         });
     }
 }
