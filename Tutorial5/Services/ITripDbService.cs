@@ -4,5 +4,6 @@ namespace Tutorial5.Services;
 
 public interface ITripDbService
 {
-    Task<List<BookWithAuthorsDto>> GetBooks();
+    Task<TripListResponseDto> GetTrips(int page, int pageSize);
+    Task AssignClientToTrip(int tripId, AssignClientToTripDto dto);
 }
