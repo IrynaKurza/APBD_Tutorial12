@@ -2,7 +2,7 @@
 
 namespace Tutorial5.Services;
 
-public interface IDbService
+public interface ITripDbService
 {
     Task<List<BookWithAuthorsDto>> GetBooks();
 }

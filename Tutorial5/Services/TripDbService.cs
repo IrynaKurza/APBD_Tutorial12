@@ -4,10 +4,10 @@ using Tutorial5.DTOs;
 
 namespace Tutorial5.Services;
 
-public class DbService : IDbService
+public class TripDbService : ITripDbService
 {
-    private readonly DatabaseContext _context;
-    public DbService(DatabaseContext context)
+    private readonly TripContext _context;
+    public TripDbService(TripContext context)
     {
         _context = context;
     }

@@ -3,17 +3,17 @@ using Tutorial5.Models;
 
 namespace Tutorial5.Data;
 
-public class DatabaseContext : DbContext
+public class TripContext : DbContext
 {
     public DbSet<Book> Books { get; set; }
     public DbSet<Author> Authors { get; set; }
     public DbSet<BookAuthor> BookAuthors { get; set; }
     
-    protected DatabaseContext()
+    protected TripContext()
     {
     }
 
-    public DatabaseContext(DbContextOptions options) : base(options)
+    public TripContext(DbContextOptions options) : base(options)
     {
     }
 
