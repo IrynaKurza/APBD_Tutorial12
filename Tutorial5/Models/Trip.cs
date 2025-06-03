@@ -1,28 +1,22 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
+﻿
 namespace Tutorial5.Models;
 
-[Table("Trip")]
 public class Trip
 {
-    [Key]
     public int IdTrip { get; set; }
-    
-    [MaxLength(120)]
-    public string Name { get; set; }
-    
-    [MaxLength(220)]
-    public string Description { get; set; }
-    
-    [Column(TypeName = "datetime")]
+
+    public string Name { get; set; } = null!;
+
+    public string Description { get; set; } = null!;
+
     public DateTime DateFrom { get; set; }
-    
-    [Column(TypeName = "datetime")]
+
     public DateTime DateTo { get; set; }
-    
+
     public int MaxPeople { get; set; }
 
-    public ICollection<ClientTrip> ClientTrips { get; set; }
-    public ICollection<CountryTrip> CountryTrips { get; set; }
+    public virtual ICollection<ClientTrip> ClientTrips { get; set; } = new List<ClientTrip>();
+
+    public virtual ICollection<Country> IdCountries { get; set; } = new List<Country>();
+    public virtual ICollection<CountryTrip> CountryTrips { get; set; } = new List<CountryTrip>();
 }
