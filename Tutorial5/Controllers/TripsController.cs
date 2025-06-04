@@ -31,7 +31,7 @@ public class TripsController : ControllerBase
         try
         {
             await _tripDbService.AssignClientToTrip(idTrip, dto);
-            return Ok();
+            return Created(); 
         }
         catch (ArgumentException ex)
         {

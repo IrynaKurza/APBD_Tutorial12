@@ -56,7 +56,7 @@ public class TripDbService : ITripDbService
     
         try
         {
-            // 1. Check trip exists and DateFrom is in future
+            // check trip exists and DateFrom is in future
             var trip = await _context.Trips.FindAsync(tripId);
             if (trip == null) 
                 throw new ArgumentException("Trip not found");
@@ -64,14 +64,14 @@ public class TripDbService : ITripDbService
             if (trip.DateFrom <= DateTime.Now)
                 throw new InvalidOperationException("Cannot register for a trip that has already occurred");
 
-            // 2. Check if client with PESEL already exists - if so, return error
+            // check if client with PESEL already exists, if so -> return error
             var existingClient = await _context.Clients
                 .FirstOrDefaultAsync(c => c.Pesel == dto.Pesel);
 
             if (existingClient != null)
                 throw new InvalidOperationException("Client with this PESEL already exists");
 
-            // 3. Create new client (always, since we verified PESEL doesn't exist)
+            // create new client
             var newClient = new Client
             {
                 FirstName = dto.FirstName,
@@ -84,7 +84,7 @@ public class TripDbService : ITripDbService
             _context.Clients.Add(newClient);
             await _context.SaveChangesAsync();
 
-            // 4. Create client-trip assignment
+            // create client-trip assignment
             var clientTrip = new ClientTrip
             {
                 IdClient = newClient.IdClient,

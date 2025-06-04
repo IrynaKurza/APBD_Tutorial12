@@ -1,5 +1,4 @@
-﻿
-namespace Tutorial5.Models;
+﻿namespace Tutorial5.Models;
 
 public class Trip
 {
@@ -16,7 +15,5 @@ public class Trip
     public int MaxPeople { get; set; }
 
     public virtual ICollection<ClientTrip> ClientTrips { get; set; } = new List<ClientTrip>();
-
-    public virtual ICollection<Country> IdCountries { get; set; } = new List<Country>();
     public virtual ICollection<CountryTrip> CountryTrips { get; set; } = new List<CountryTrip>();
 }
