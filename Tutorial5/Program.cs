@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 
 // Konfiguracja kontekstu bazy danych
 // ConnectionString jest pobierany z appsettings.json, oczywiście należy go tam też ustawić
-builder.Services.AddDbContext<TripContext>(options => 
+builder.Services.AddDbContext<ApbdContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"))
 );
 

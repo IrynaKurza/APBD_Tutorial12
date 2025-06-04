@@ -7,9 +7,9 @@ namespace Tutorial5.Services;
 
 public class TripDbService : ITripDbService
 {
-    private readonly TripContext _context;
+    private readonly ApbdContext _context;
     
-    public TripDbService(TripContext context)
+    public TripDbService(ApbdContext context)
     {
         _context = context;
     }
@@ -53,25 +53,25 @@ public class TripDbService : ITripDbService
     public async Task AssignClientToTrip(int tripId, AssignClientToTripDto dto)
     {
         using var transaction = await _context.Database.BeginTransactionAsync();
-        
+    
         try
         {
-            // 1. Check if trip exists and DateFrom is in the future
+            // 1. Check trip exists and DateFrom is in future
             var trip = await _context.Trips.FindAsync(tripId);
-            if (trip == null)
+            if (trip == null) 
                 throw new ArgumentException("Trip not found");
-
+            
             if (trip.DateFrom <= DateTime.Now)
                 throw new InvalidOperationException("Cannot register for a trip that has already occurred");
 
-            // 2. Check if client with given PESEL already exists
+            // 2. Check if client with PESEL already exists - if so, return error
             var existingClient = await _context.Clients
                 .FirstOrDefaultAsync(c => c.Pesel == dto.Pesel);
 
             if (existingClient != null)
                 throw new InvalidOperationException("Client with this PESEL already exists");
 
-            // 3. Create new client
+            // 3. Create new client (always, since we verified PESEL doesn't exist)
             var newClient = new Client
             {
                 FirstName = dto.FirstName,
@@ -80,7 +80,7 @@ public class TripDbService : ITripDbService
                 Telephone = dto.Telephone,
                 Pesel = dto.Pesel
             };
-
+            
             _context.Clients.Add(newClient);
             await _context.SaveChangesAsync();
 

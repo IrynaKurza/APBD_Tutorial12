@@ -5,9 +5,9 @@ namespace Tutorial5.Services;
 
 public class ClientDbService : IClientDbService
 {
-    private readonly TripContext _context;
+    private readonly ApbdContext _context;
     
-    public ClientDbService(TripContext context)
+    public ClientDbService(ApbdContext context)
     {
         _context = context;
     }

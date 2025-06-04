@@ -13,6 +13,6 @@ public class CountryTrip
     [ForeignKey(nameof(Trip))]
     public int IdTrip { get; set; }
 
-    public Country Country { get; set; } = new Country();
-    public Trip Trip { get; set; } = new Trip();
+    public Country Country { get; set; } = null!;
+    public Trip Trip { get; set; } = null!;
 }
